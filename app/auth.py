@@ -10,8 +10,8 @@ from db.database import get_db
 from db.models import User
 from app.schemas import TokenData
 
-# Password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# Password hashing - using pbkdf2_sha256 to avoid bcrypt issues
+pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
 
 # JWT token security
 security = HTTPBearer()

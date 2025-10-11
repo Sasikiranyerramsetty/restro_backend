@@ -1,3 +1,7 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from sqlalchemy.orm import Session
 from db.database import engine, SessionLocal
 from db.models import Base, Role, User
@@ -63,7 +67,7 @@ def create_admin_user():
             email="admin@restro.com",
             phone_number="+1234567890",
             password=get_password_hash("admin123"),
-            role_id=admin_role.id
+            roles_id=admin_role.id
         )
         
         db.add(admin_user)

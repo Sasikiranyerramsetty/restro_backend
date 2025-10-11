@@ -30,10 +30,11 @@ class UserLogin(BaseModel):
 
 class UserResponse(UserBase):
     id: int
-    role_id: int
-    is_active: bool
-    created_at: datetime
-    updated_at: Optional[datetime] = None
+    roles_id: int
+    shift: Optional[str] = None
+    salary: Optional[str] = None
+    status: Optional[str] = None
+    address: Optional[str] = None
     
     class Config:
         from_attributes = True

@@ -18,16 +18,16 @@ def check_existing_tables():
             # Check if database exists
             result = connection.execute(text("SHOW DATABASES LIKE 'restaurant_app'"))
             if not result.fetchone():
-                print("❌ Database 'restaurant_app' does not exist!")
+                print("Database 'restaurant_app' does not exist!")
                 return False
             
-            print("✅ Database 'restaurant_app' exists!")
+            print("Database 'restaurant_app' exists!")
             
             # Get list of existing tables
             inspector = inspect(engine)
             existing_tables = inspector.get_table_names()
             
-            print(f"\n📋 Existing tables in restaurant_app:")
+            print(f"\nExisting tables in restaurant_app:")
             if existing_tables:
                 for table in existing_tables:
                     print(f"  - {table}")
@@ -46,16 +46,16 @@ def check_existing_tables():
             missing_tables = [table for table in required_tables if table not in existing_tables]
             
             if missing_tables:
-                print(f"⚠️  Missing required tables: {missing_tables}")
+                print(f"Missing required tables: {missing_tables}")
                 print("You can create them by running: python db/init_db.py")
             else:
-                print("✅ All required tables (roles, users) exist!")
+                print("All required tables (roles, users) exist!")
                 
                 # Check if roles table has data
                 if 'roles' in existing_tables:
                     result = connection.execute(text("SELECT COUNT(*) FROM roles"))
                     role_count = result.fetchone()[0]
-                    print(f"📊 Roles table has {role_count} records")
+                    print(f"Roles table has {role_count} records")
                     
                     if role_count > 0:
                         result = connection.execute(text("SELECT name FROM roles"))
@@ -65,7 +65,7 @@ def check_existing_tables():
             return True
             
     except Exception as e:
-        print(f"❌ Error checking database: {e}")
+        print(f"Error checking database: {e}")
         return False
 
 if __name__ == "__main__":

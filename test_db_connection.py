@@ -16,11 +16,11 @@ def test_connection():
         
         with engine.connect() as connection:
             result = connection.execute(text("SELECT 1"))
-            print("✅ Database connection successful!")
+            print("Database connection successful!")
             return True
             
     except Exception as e:
-        print(f"❌ Database connection failed: {e}")
+        print(f"Database connection failed: {e}")
         print("\nPlease check:")
         print("1. MySQL server is running")
         print("2. Database 'restaurant_app' exists")

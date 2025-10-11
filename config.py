@@ -4,11 +4,11 @@ import os
 
 class Settings(BaseSettings):
     # Database Configuration
-    DATABASE_URL: str = "mysql+pymysql://root@localhost:3306/restaurant_app"
+    DATABASE_URL: str = "mysql+pymysql://root:1234@localhost:3306/restaurant_app"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_USER: str = "root"
-    DB_PASSWORD: str = ""
+    DB_PASSWORD: str = "1234"
     DB_NAME: str = "restaurant_app"
     
     # Application Configuration
