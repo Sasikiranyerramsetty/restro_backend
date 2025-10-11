@@ -23,7 +23,7 @@ def test_connection():
         print(f"❌ Database connection failed: {e}")
         print("\nPlease check:")
         print("1. MySQL server is running")
-        print("2. Database 'restro_backend' exists")
+        print("2. Database 'restaurant_app' exists")
         print("3. User credentials are correct")
         print("4. Update DATABASE_URL in .env file if needed")
         return False

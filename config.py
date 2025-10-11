@@ -4,12 +4,12 @@ import os
 
 class Settings(BaseSettings):
     # Database Configuration
-    DATABASE_URL: str = "mysql+pymysql://root@localhost:3306/restro_backend"
+    DATABASE_URL: str = "mysql+pymysql://root@localhost:3306/restaurant_app"
     DB_HOST: str = "localhost"
     DB_PORT: int = 3306
     DB_USER: str = "root"
     DB_PASSWORD: str = ""
-    DB_NAME: str = "restro_backend"
+    DB_NAME: str = "restaurant_app"
     
     # Application Configuration
     APP_NAME: str = "Restro Backend"

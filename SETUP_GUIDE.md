@@ -1,15 +1,23 @@
 # Quick Setup Guide
 
 ## Your MySQL Configuration
-Based on your JDBC string `jdbc:mysql://localhost:3306/?user=root`, I've updated the configuration to match your setup.
+✅ **Connected to existing database: `restaurant_app`**
+- Host: localhost:3306
+- User: root
+- Database: restaurant_app
 
-## Step 1: Database Setup
+## Step 1: Check Existing Database
+
+### Check what tables already exist:
+```bash
+python check_existing_tables.py
+```
 
 ### Option A: Using MySQL Workbench
 1. Open MySQL Workbench
 2. Connect to your MySQL server
 3. Open the `setup_database.sql` file
-4. Execute the script to create the database and tables
+4. Execute the script to create missing tables (if needed)
 
 ### Option B: Using MySQL Command Line
 ```bash

@@ -1,11 +1,8 @@
 -- MySQL Database Setup Script for Restro Backend
 -- Run this in MySQL Workbench or MySQL command line
 
--- Create the database
-CREATE DATABASE IF NOT EXISTS restro_backend;
-
--- Use the database
-USE restro_backend;
+-- Use the existing restaurant_app database
+USE restaurant_app;
 
 -- Create roles table
 CREATE TABLE IF NOT EXISTS roles (
