@@ -3,13 +3,9 @@ from typing import List
 import os
 
 class Settings(BaseSettings):
-    # Database Configuration
-    DATABASE_URL: str = "mysql+pymysql://root:1234@localhost:3306/restaurant_app"
-    DB_HOST: str = "localhost"
-    DB_PORT: int = 3306
-    DB_USER: str = "root"
-    DB_PASSWORD: str = "1234"
-    DB_NAME: str = "restaurant_app"
+    # MongoDB Configuration
+    MONGODB_URL: str = "mongodb+srv://Jagadish:Ammananna@cluster0.6evyrdj.mongodb.net/"
+    MONGODB_DATABASE: str = "users_db"
     
     # Application Configuration
     APP_NAME: str = "Restro Backend"
@@ -31,6 +27,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"
 
 # Create settings instance
 settings = Settings()

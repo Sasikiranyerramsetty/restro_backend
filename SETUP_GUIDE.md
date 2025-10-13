@@ -1,70 +1,39 @@
 # Quick Setup Guide
 
-## Your MySQL Configuration
-✅ **Connected to existing database: `restaurant_app`**
-- Host: localhost:3306
-- User: root
-- Database: restaurant_app
+## Your MongoDB Configuration
+✅ **Connected to MongoDB Atlas cluster**
+- Database: `users_db`
+- Connection: MongoDB Atlas (cloud)
+- Collections: `users`
 
-## Step 1: Check Existing Database
-
-### Check what tables already exist:
-```bash
-python check_existing_tables.py
-```
-
-### Option A: Using MySQL Workbench
-1. Open MySQL Workbench
-2. Connect to your MySQL server
-3. Open the `setup_database.sql` file
-4. Execute the script to create missing tables (if needed)
-
-### Option B: Using MySQL Command Line
-```bash
-mysql -u root -p
-```
-Then run:
-```sql
-source setup_database.sql;
-```
-
-## Step 2: Install Python (if not installed)
+## Step 1: Install Python (if not installed)
 1. Download Python from https://python.org
 2. Make sure to check "Add Python to PATH" during installation
 3. Restart your terminal/command prompt
 
-## Step 3: Install Dependencies
+## Step 2: Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-## Step 4: Test Connection
-```bash
-python test_db_connection.py
-```
-
-## Step 5: Initialize Database (Optional)
-```bash
-python db/init_db.py
-```
-
-## Step 6: Start the Server
+## Step 3: Start the Server
 ```bash
 python main.py
 ```
 
 ## Your Configuration
-- **Database**: `restro_backend`
-- **Host**: `localhost`
-- **Port**: `3306`
-- **User**: `root`
-- **Password**: (empty)
+- **Database**: `users_db` (MongoDB)
+- **Connection**: MongoDB Atlas cluster
+- **Collections**: `users`
 
 ## API Endpoints
 Once running, you can access:
 - **API Docs**: http://localhost:8000/docs
-- **Signup**: POST http://localhost:8000/api/v1/auth/signup
-- **Login**: POST http://localhost:8000/api/v1/auth/login
+- **Health Check**: GET http://localhost:8000/health
+- **User Signup**: POST http://localhost:8000/api/v1/users/signup
+- **User Login**: POST http://localhost:8000/api/v1/users/login
+- **Auth Signup**: POST http://localhost:8000/api/v1/auth/signup
+- **Auth Login**: POST http://localhost:8000/api/v1/auth/login
 
 ## Test the API
 You can test the signup endpoint with:
@@ -76,3 +45,9 @@ You can test the signup endpoint with:
   "password": "password123"
 }
 ```
+
+## MongoDB Features
+- **Document-based storage**: Flexible schema for user data
+- **Automatic scaling**: MongoDB Atlas handles scaling
+- **High availability**: Replica set configuration
+- **Secure connection**: SSL/TLS encrypted connection

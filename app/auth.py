@@ -1,28 +1,36 @@
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
-from sqlalchemy.orm import Session
 from config import settings
-from db.database import get_db
-from db.models import User
-from app.schemas import TokenData
-
-# Password hashing - using pbkdf2_sha256 to avoid bcrypt issues
-pwd_context = CryptContext(schemes=["pbkdf2_sha256"], deprecated="auto")
+from app.schemas import TokenData, UserDocument
+from services.users_services import UserService
+import hashlib
+import secrets
 
 # JWT token security
 security = HTTPBearer()
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:
     """Verify a password against its hash"""
-    return pwd_context.verify(plain_password, hashed_password)
+    # Extract salt and hash from stored password
+    try:
+        salt, hash_part = hashed_password.split('$')
+        # Hash the plain password with the same salt
+        test_hash = hashlib.pbkdf2_hmac('sha256', plain_password.encode('utf-8'), salt.encode('utf-8'), 100000)
+        return test_hash.hex() == hash_part
+    except:
+        return False
 
 def get_password_hash(password: str) -> str:
-    """Hash a password"""
-    return pwd_context.hash(password)
+    """Hash a password using PBKDF2"""
+    # Generate a random salt
+    salt = secrets.token_hex(16)
+    # Hash the password with the salt
+    hash_obj = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt.encode('utf-8'), 100000)
+    # Return salt$hash format
+    return f"{salt}${hash_obj.hex()}"
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create JWT access token"""
@@ -48,10 +56,9 @@ def verify_token(token: str, credentials_exception):
     except JWTError:
         raise credentials_exception
 
-def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(security),
-    db: Session = Depends(get_db)
-) -> User:
+async def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+) -> UserDocument:
     """Get current authenticated user"""
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -62,21 +69,15 @@ def get_current_user(
     token = credentials.credentials
     token_data = verify_token(token, credentials_exception)
     
-    user = db.query(User).filter(User.email == token_data.email).first()
+    user = await UserService.get_user_by_email(token_data.email)
     if user is None:
         raise credentials_exception
     
-    if not user.is_active:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Inactive user"
-        )
-    
     return user
 
-def authenticate_user(db: Session, email: str, password: str) -> Optional[User]:
+async def authenticate_user(email: str, password: str) -> Optional[UserDocument]:
     """Authenticate user with email and password"""
-    user = db.query(User).filter(User.email == email).first()
+    user = await UserService.get_user_by_email(email)
     if not user:
         return None
     if not verify_password(password, user.password):

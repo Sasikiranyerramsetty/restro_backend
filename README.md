@@ -1,15 +1,16 @@
 # Restro Backend
 
-A restaurant backend API built with FastAPI, featuring user authentication and role-based access control.
+A restaurant backend API built with FastAPI and MongoDB, featuring user authentication and role-based access control.
 
 ## Features
 
 - 🔐 JWT-based authentication
 - 👥 Role-based access control (Admin, Employee, Customer)
-- 🗄️ MySQL database integration
+- 🍃 MongoDB database integration
 - 📝 Customer signup and user login
 - 🛡️ Password hashing and security
 - 📚 Auto-generated API documentation
+- ☁️ MongoDB Atlas cloud database
 
 ## User Roles
 
@@ -22,25 +23,16 @@ A restaurant backend API built with FastAPI, featuring user authentication and r
 ### Prerequisites
 
 1. **Python 3.8+** installed
-2. **MySQL Server** running
-3. **MySQL Workbench** (optional, for database management)
+2. **MongoDB Atlas account** (cloud database)
 
 ### Database Setup
 
-1. Create a MySQL database named `restro_backend`:
-   ```sql
-   CREATE DATABASE restro_backend;
-   ```
+The application is configured to use MongoDB Atlas cloud database:
+- **Database**: `users_db`
+- **Connection**: MongoDB Atlas cluster
+- **Collections**: `users`
 
-2. Update database credentials in `.env` file:
-   ```
-   DATABASE_URL=mysql+pymysql://your_username:your_password@localhost:3306/restro_backend
-   DB_HOST=localhost
-   DB_PORT=3306
-   DB_USER=your_username
-   DB_PASSWORD=your_password
-   DB_NAME=restro_backend
-   ```
+No local database setup required - everything runs in the cloud!
 
 ### Installation
 
@@ -49,17 +41,7 @@ A restaurant backend API built with FastAPI, featuring user authentication and r
    pip install -r requirements.txt
    ```
 
-2. **Test database connection**:
-   ```bash
-   python test_db_connection.py
-   ```
-
-3. **Initialize database** (creates tables and default roles):
-   ```bash
-   python db/init_db.py
-   ```
-
-4. **Start the server**:
+2. **Start the server**:
    ```bash
    python main.py
    ```
@@ -67,6 +49,8 @@ A restaurant backend API built with FastAPI, featuring user authentication and r
    ```bash
    uvicorn main:app --reload
    ```
+
+The MongoDB connection is automatically established when the server starts.
 
 ## API Endpoints
 
@@ -76,15 +60,17 @@ A restaurant backend API built with FastAPI, featuring user authentication and r
 - `GET /api/v1/auth/me` - Get current user info
 - `GET /api/v1/auth/profile` - Get user profile
 
+### Users
+- `POST /api/v1/users/signup` - User registration
+- `POST /api/v1/users/login` - User login
+- `GET /api/v1/users/{user_id}` - Get user by ID
+- `GET /api/v1/users` - Get all users
+- `PATCH /api/v1/users/{user_id}/status` - Update user status
+
 ### Documentation
 - `GET /docs` - Interactive API documentation (Swagger UI)
 - `GET /redoc` - Alternative API documentation
-
-## Default Admin User
-
-After running `python db/init_db.py`, a default admin user is created:
-- **Email**: admin@restro.com
-- **Password**: admin123
+- `GET /health` - Health check endpoint
 
 ## Development
 
@@ -92,9 +78,9 @@ The project structure:
 ```
 restro_backend/
 ├── app/           # Application logic and schemas
-├── db/            # Database models and connection
+├── db/            # MongoDB connection
 ├── routes/        # API routes
-├── endpoints/     # API endpoints
+├── services/      # Business logic services
 ├── main.py        # FastAPI application
 ├── config.py      # Configuration settings
 └── requirements.txt

@@ -2,14 +2,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from config import settings
 from routes import api_router
-from db.database import engine
-from db.models import Base
+from db.mongodb import connect_to_mongo, close_mongo_connection
 
 # Create FastAPI application
 app = FastAPI(
     title=settings.APP_NAME,
     version=settings.APP_VERSION,
-    description="A restaurant backend API built with FastAPI",
+    description="A restaurant backend API built with FastAPI and MongoDB",
     debug=settings.DEBUG
 )
 
@@ -27,8 +26,13 @@ app.include_router(api_router, prefix="/api/v1")
 
 @app.on_event("startup")
 async def startup_event():
-    """Create database tables on startup"""
-    Base.metadata.create_all(bind=engine)
+    """Connect to MongoDB on startup"""
+    await connect_to_mongo()
+
+@app.on_event("shutdown")
+async def shutdown_event():
+    """Close MongoDB connection on shutdown"""
+    await close_mongo_connection()
 
 @app.get("/")
 async def root():

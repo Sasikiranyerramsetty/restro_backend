@@ -5,10 +5,12 @@ api_router = APIRouter()
 
 # Import and include route modules here
 from .auth import router as auth_router
+from .users import router as users_router
 # from .menu import router as menu_router
 # from .orders import router as orders_router
 
 api_router.include_router(auth_router, prefix="/auth", tags=["Authentication"])
+api_router.include_router(users_router, prefix="/users", tags=["Users"])
 # api_router.include_router(menu_router, prefix="/menu", tags=["Menu"])
 # api_router.include_router(orders_router, prefix="/orders", tags=["Orders"])
 
